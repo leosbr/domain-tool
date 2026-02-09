@@ -18,6 +18,13 @@ if uploaded_file is not None:
             df = pd.read_excel(uploaded_file)
         
         st.success(f"✅ تم رفع الملف بنجاح! عدد الصفوف الأصلي: {len(df)}")
+         # تغيير أسماء الأعمدة لتكون أكثر وضوحاً (خيار إنجليزي)
+        df = df.rename(columns={
+            'keyword': 'Domain Keyword',
+            'extension_count': 'Registered Extensions'
+        })
+        st.info("✅ تم تغيير أسماء الأعمدة للوضوح!")
+        
        
         # تنظيف البيانات
         if 'keyword' in df.columns:

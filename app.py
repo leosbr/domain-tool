@@ -18,12 +18,7 @@ if uploaded_file is not None:
             df = pd.read_excel(uploaded_file)
         
         st.success(f"✅ تم رفع الملف بنجاح! عدد الصفوف الأصلي: {len(df)}")
-         # تغيير أسماء الأعمدة لتكون أكثر وضوحاً (خيار إنجليزي)
-        df = df.rename(columns={
-            'keyword': 'Domain Keyword',
-            'extension_count': 'Registered Extensions'
-        })
-        st.info("✅ تم تغيير أسماء الأعمدة للوضوح!")
+         
         
        
         # تنظيف البيانات
@@ -43,6 +38,12 @@ if uploaded_file is not None:
             
             st.dataframe(df_filtered.head(20))  # يعرض أول 20 صف بعد الفلترين
             # إحصائيات على df_filtered النهائية (التغيير هنا)
+             # تغيير أسماء الأعمدة لتكون أكثر وضوحاً (خيار إنجليزي)
+           df = df.rename(columns={
+               'keyword': 'Domain Keyword',
+               'extension_count': 'Registered Extensions'
+           })
+           st.info("✅ تم تغيير أسماء الأعمدة للوضوح!")
             st.write(f"**عدد الأعمدة النهائي:** {len(df_filtered.columns)}")
             st.write(f"**أسماء الأعمدة النهائية:** {list(df_filtered.columns)}")
         else:

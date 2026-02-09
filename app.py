@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from validators import check_trademark, clean_special_chars
+from validators import check_trademark  # استيراد الدالة إذا كان validators.py موجود
 
 # عنوان التطبيق
 st.title("🛠️ Domain Intelligence & Generation Tool")
@@ -20,21 +20,21 @@ if uploaded_file is not None:
         st.success(f"✅ تم رفع الملف بنجاح! عدد الصفوف الأصلي: {len(df)}")
         
         # تنظيف البيانات
-        if 'keyword' in df.columns:  # تغيير إلى 'keyword' بدلاً من 'Keyword' للتوافق
+        if 'keyword' in df.columns:
             df['keyword'] = df['keyword'].str.lower().str.strip()  # تحويل لأحرف صغيرة وإزالة مسافات
             st.success("✅ تم تنظيف عمود 'keyword' (تحويل لصغيرة وإزالة مسافات)!")
         
         # فلتر أساسي: فقط الكلمات ذات extension_count > 700 (يمكن تعديل الرقم)
-        if 'extension_count' in df.columns:  # تغيير إلى 'extension_count' للتوافق
+        if 'extension_count' in df.columns:
             df_filtered = df[df['extension_count'] > 700]
             st.info(f"📊 بعد الفلتر (>700): {len(df_filtered)} كلمة مفتاحية متبقية")
-
-					  # تطبيق فلتر العلامات التجارية
+            
+            # تطبيق فلتر العلامات التجارية
             df_filtered['is_safe'] = df_filtered['keyword'].apply(check_trademark)
             df_filtered = df_filtered[df_filtered['is_safe'] == True]
-            st.info(f"📊 بعد فلتر العلامات: {len(df_filtered)} كلمة آمنة متبقية")  # هذه تأتي ثانياً
+            st.info(f"📊 بعد فلتر العلامات: {len(df_filtered)} كلمة آمنة متبقية")
             
-					  st.dataframe(df_filtered.head(20))  # يعرض أول 20 صف بعد الفلتر
+            st.dataframe(df_filtered.head(20))  # يعرض أول 20 صف بعد الفلترين
         else:
             st.dataframe(df.head(20))  # إذا لم يكن هناك عمود فلتر، عرض الأصلي
         

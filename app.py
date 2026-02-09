@@ -41,9 +41,7 @@ if uploaded_file is not None:
         else:
             st.dataframe(df.head(20))  # إذا لم يكن هناك عمود فلتر، عرض الأصلي
         
-        st.write(f"**عدد الأعمدة:** {len(df.columns)}")
-        st.write(f"**أسماء الأعمدة:** {list(df.columns)}")
-        
+       
     except Exception as e:
         st.error(f"خطأ في قراءة أو معالجة الملف: {e}")
 else:

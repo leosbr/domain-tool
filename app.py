@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from validators import check_trademark, clean_special_chars
 
 # عنوان التطبيق
 st.title("🛠️ Domain Intelligence & Generation Tool")
@@ -27,7 +28,13 @@ if uploaded_file is not None:
         if 'extension_count' in df.columns:  # تغيير إلى 'extension_count' للتوافق
             df_filtered = df[df['extension_count'] > 700]
             st.info(f"📊 بعد الفلتر (>700): {len(df_filtered)} كلمة مفتاحية متبقية")
-            st.dataframe(df_filtered.head(20))  # يعرض أول 20 صف بعد الفلتر
+
+					  # تطبيق فلتر العلامات التجارية
+            df_filtered['is_safe'] = df_filtered['keyword'].apply(check_trademark)
+            df_filtered = df_filtered[df_filtered['is_safe'] == True]
+            st.info(f"📊 بعد فلتر العلامات: {len(df_filtered)} كلمة آمنة متبقية")  # هذه تأتي ثانياً
+            
+					  st.dataframe(df_filtered.head(20))  # يعرض أول 20 صف بعد الفلتر
         else:
             st.dataframe(df.head(20))  # إذا لم يكن هناك عمود فلتر، عرض الأصلي
         
